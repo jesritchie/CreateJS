@@ -1,20 +1,31 @@
 <!doctype html>
+<!-- 
+			=================
+			=	DISCLAIMER  =
+			=================
+		This project is following through the 
+		createJS getting started tutorial.
+		
+		which can be found at 
+		https://createjs.com/getting-started
+ -->
 <html >
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>EaselJS</title>
         <meta name="description" content="">
-        <link rel="apple-touch-icon" href="icon.png">
-        <!-- Place favicon.ico in the root directory -->
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
+
+		<!-- Include the EaselJS libraries in your project by linking to the CreateJS CDN. -->
+		<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+				<script src="main.js"></script>
     </head>
-    <body>
+	<body onload="init();">
+        <!-- site / application content here 
+		     canvas element within your body tag, 
+		     set to body to call a function when it has loaded.-->	
+		  <canvas id="demoCanvas" width="500" height="300"></canvas>
 
-
-        <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.</p>
 
 
     
