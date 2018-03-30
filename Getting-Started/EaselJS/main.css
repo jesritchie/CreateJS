@@ -3,4 +3,40 @@ body {
    background-color: #cccccc;
    background-size:cover;
    background-repeat: no-repeat;
+   width:90%;
+}
+
+/*
+	CSS Heading styling
+	http://mksht.crisnoble.com
+*/
+
+.knockout {
+/*https://www.planetdeadly.com/wp-content/uploads/licorne-nuclear-test-720x495.jpg*/
+  background: url(http://cdn.spacetelescope.org/archives/images/screen/heic1509c.jpg) -80px -80px;
+  color: red;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  font-weight: bold;
+  font-size: 100px;
+  font-family: arial, helvetica;
+  width: 600px;
+  margin: 50px auto;
+  text-align: right;
+  margin-top: 150px;
+  margin-bottom: 10px;
+}
+
+#logo{
+
+	max-width: 20%;	
+
+}
+
+#demo{
+	margin-top: 170px;
+    margin-bottom: 10px;
+    margin-right: 50px;
+
+	font-size: 2em;
 }
