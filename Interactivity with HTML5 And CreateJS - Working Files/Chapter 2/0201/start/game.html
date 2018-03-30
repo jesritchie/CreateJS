@@ -12,26 +12,32 @@
 <script src="game.js"></script>
 
 <script>
+
 var canvas, stage, exportRoot;
+var inPlay; //to know when game is playing
 
 function init() {
 	canvas = document.getElementById("canvas");
-
+    //preload sounds into manifest.
 	var manifest = [
 		{src:"sounds/splat.mp3", id:"splat_1"}
 	];
 
 	var loader = new PreloadJS(false);
 	loader.installPlugin(SoundJS);
+	//function is called when the loader completes loading the .mp3 into the manifest.
 	loader.onComplete = handleComplete;
 	loader.loadManifest(manifest);
 }
-
+//At this point everything is ready and game programming can commence.
 function handleComplete() {
+//exportRoot is the image canvas itself
 	exportRoot = new lib.game();
 
 	stage = new Stage(canvas);
 	stage.addChild(exportRoot);
+	setTitle();
+	//Change the screen
 	stage.update();
 
 	Ticker.setFPS(30);
@@ -40,6 +46,20 @@ function handleComplete() {
 
 function playSound(name, loop) {
 	SoundJS.play(name, SoundJS.INTERRUPT_EARLY, 0, 0, loop);
+}
+
+function setTitle(){
+	//make the button now click-able
+	exportRoot.title.button.onClick = startClick;
+}
+//enventObj lets CreateJS know that there is a event taking place
+//the click of a button
+function startClick(eventObj){
+	//first thing the title screen to disappear
+	exportRoot.title.visible=false;
+	//make button no longer clickable
+	//set inPlay to true since game is now active
+	inPlay = true;
 }
 </script>
 </head>
