@@ -1,37 +1,90 @@
 <!doctype html>
+<!-- 
+			=================
+			=	DISCLAIMER  =
+			=================
+		This project is following through the 
+		SoundJS getting started tutorial.
+		
+		which can be found at 
+		https://createjs.com/getting-started
+ -->
 <html class="no-js" lang="">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
+        <title>TweenJS</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="manifest" href="site.webmanifest">
-        <link rel="apple-touch-icon" href="icon.png">
-        <!-- Place favicon.ico in the root directory -->
-
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-    </head>
-    <body>
-        <!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
-
-        <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.</p>
-        <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+		<!-- Script for calling in SoundJS-->
+		 <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+		<!-- Scripts -->
+		<script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+		<!-- Styles -->
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+		<!-- Bootstrap-->
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+		rel="stylesheet" 
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+		crossorigin="anonymous">
+		
+    </head>
+	
+	<!-- Loading in sound to the body for repeated use-->
+	<body onload="loadSound();">
+	
 
-        <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
-        <script>
-            window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
-            ga('create','UA-XXXXX-Y','auto');ga('send','pageview')
-        </script>
-        <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+
+      
+
+    <!-- Page Content -->
+    <div class="container">
+	     <h1 class="my-4" style="color:white; text-align:center;">Welcome</h1>
+
+
+      <!-- Sounds from https://www.soundeffectsplus.com -->
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <div class="card h-100">
+            <h4 class="card-header">Airplane</h4>
+            <div class="card-body">
+              <p class="card-text">Airplane taking off over a large airliner</p>
+			  </div>
+            <div class="card-footer">
+                <button onclick="playPlane();" class="playSound btn btn-primary">Play Sound</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <div class="card h-100">
+            <h4 class="card-header">Laser Beam</h4>
+            <div class="card-body">
+              <p class="card-text">Pew! Pew! Lets shoot some  S!#^.</p>
+			  </div>
+            <div class="card-footer">
+              <button onclick="playLaser();" class="playSound btn btn-primary">Play Sound</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <div class="card h-100">
+            <h4 class="card-header">Thunder</h4>
+            <div class="card-body">
+              <p class="card-text">Listen to the roaring sounds of thunder!</p>
+            </div>
+            <div class="card-footer">
+               <button onclick="playThunder();" class="playSound btn btn-primary">Play Sound</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.row -->
+
     </body>
+
 </html>
