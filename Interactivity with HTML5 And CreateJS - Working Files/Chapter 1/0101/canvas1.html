@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      #canvas {
+        border: 1px solid #333;
+      }
+    </style>
+    <script>
+      window.onload = function() {
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        ctx.beginPath();
+        ctx.moveTo(100, 150);
+        ctx.lineTo(450, 50);
+        ctx.lineWidth = 10;
+
+        // set line color
+        ctx.strokeStyle = "#ff0000";
+        ctx.stroke();
+      };
+    </script>
+  </head>
+  <body>
+    <canvas id="canvas" width="578" height="200"></canvas>
+  </body>
+</html>

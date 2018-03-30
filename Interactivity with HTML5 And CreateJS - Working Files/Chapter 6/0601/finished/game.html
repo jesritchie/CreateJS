@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CreateJS export from game.fla</title>
+
+<script src="libs/easeljs-0.4.2.min.js"></script>
+<script src="libs/tweenjs-0.2.0.min.js"></script>
+<script src="libs/movieclip-0.4.1.min.js"></script>
+<script src="libs/preloadjs-0.1.0.min.js"></script>
+<script src="libs/soundjs-0.2.0.min.js"></script>
+<script src="game.js"></script>
+
+<script>
+var canvas, stage, exportRoot;
+var inPlay, egg, splat, gOver, score, hero, walkPos, moving, enemy, aTime=0, aFreq, attackSpeed, eEgg=false, eggDrop=false, eggSplat, heroEgg, eggCounter, nest;
+var ePosX = [-95, -95, 100, 900, 1100];
+var ePosY = [90, 180, -75, -75, 0];
+
+
+function init() {
+	canvas = document.getElementById("canvas");
+
+	var manifest = [
+		{src:"sounds/splat.mp3", id:"splat_1"}
+	];
+
+	var loader = new PreloadJS(false);
+	loader.installPlugin(SoundJS);
+	loader.onComplete = handleComplete;
+	loader.loadManifest(manifest);
+}
+
+function handleComplete() {
+	exportRoot = new lib.game();
+	egg = exportRoot.egg;
+	splat = exportRoot.splat;
+	gOver = exportRoot.gOver;
+	hero = exportRoot.monster;
+	exportRoot.ground.onClick = groundClick;
+	enemy = exportRoot.bird;
+	enemy.onClick = eClick;
+	nest = exportRoot.nest;
+
+	stage = new Stage(canvas);
+	stage.addChild(exportRoot);
+	setTitle();
+	stage.update();
+
+	Ticker.setFPS(24);
+	Ticker.addListener(window);
+}
+
+function playSound(name, loop) {
+	SoundJS.play(name, SoundJS.INTERRUPT_EARLY, 0, 0, loop);
+}
+
+function setTitle(){
+	exportRoot.title.visible = true;
+	exportRoot.title.button.onClick = startClick;
+	gOver.visible = false;
+	egg.x = -100;
+	egg.y = -100;
+	splat.x = -200;
+	splat.y = 550;
+	splat.alpha = 1;
+	score = 0;
+	hero.x = 175;
+	walkPos = hero.x;
+	moving = false;
+	aFreq = 350;
+	attackSpeed = 4000;
+	var p = Math.round(Math.random()*4);
+	enemy.x = ePosX[p];
+	enemy.y = ePosY[p];
+	eggSplat = false;
+	heroEgg = false;
+	eggCounter = 5;
+	nest.egg1.visible = true;
+	nest.egg2.visible = true;
+	nest.egg3.visible = true;
+	nest.egg4.visible = true;
+	nest.egg5.visible = true;
+}
+function startClick(eventObj){
+	exportRoot.title.visible = false;
+	exportRoot.title.button.onClick = null;
+	inPlay = true;
+	eAttack();
+}
+function groundClick(eventObj){
+	//console.log(eventObj.stageX);
+	walkPos = eventObj.stageX;
+	moving = true;
+	hero.gotoAndStop("walk");
+}
+function tick(){
+	if (inPlay) {
+		heroMove();
+		enemyManager();
+		eggControl();
+		exportRoot.score.text=score;
+	}
+	stage.update();
+}
+function heroMove(){
+	hero.egg.visible = heroEgg;
+	if (moving){
+		if (walkPos < hero.x){
+			hero.x -= 7;
+			hero.scaleX = -1.75;
+		} else {
+			hero.x += 7;
+			hero.scaleX = 1.75;
+		}
+		var diff = walkPos-hero.x;
+		if(diff <= 5.1 && diff >-5.1){
+			moving=false;
+			hero.gotoAndStop("idle");
+		}
+	}
+	if (collisionHero(nest.x, nest.y, 50) && heroEgg == true){
+		score+=10;
+		heroEgg = false;
+		eggCounter++;
+		nest["egg"+eggCounter].visible = true;
+	}
+}
+function enemyManager(){
+	aTime++;
+	if(aTime > aFreq){
+		if (eggCounter <= 0){
+			Tween.removeTweens(enemy);
+			inPlay = false;
+			setTitle();
+		} else {
+			eAttack();
+		}
+		aTime = 0;
+	}
+}
+function eAttack(){
+	eEgg = false;
+	enemy.scaleX = -1.3;
+	Tween.get(enemy).to({x:450, y:450}, 4500, Ease.sineOut).call(eEscape);
+}
+function eEscape(){
+	nest["egg"+eggCounter].visible = false;
+	eggCounter --;
+	eEgg = true;
+	enemy.scaleX = 1.3;
+	var p = Math.round(Math.random()*4);
+	Tween.get(enemy).to({x:ePosX[p], y: ePosY[p]}, attackSpeed, Ease.sineOut);	
+}
+function eggControl(){
+	if (eggCounter <= 0){
+		gOver.visible = true;
+	}
+	enemy.egg.visible = eEgg;
+	if (eggDrop){
+		egg.y +=4;
+		if (collisionHero(egg.x, egg.y, 18) && heroEgg == false){
+			score += 10;
+			heroEgg = true;
+			egg.x = -100;
+			egg.y = -100;
+			eggDrop = false;
+		}
+		if(egg.y > 550){
+			splat.x = egg.x;
+			egg.x = -100;
+			egg.y = -100;
+			eggDrop = false;
+			splat.gotoAndPlay("sound");
+			eggSplat = true;
+		}
+	}
+	if (eggSplat){
+		splat.alpha -= 0.08;
+		if (splat.alpha<=0){
+			splat.x = -200;
+			splat.alpha = 1;
+			eggSplat = false;
+		}
+	}
+}
+function eClick (eventObj){
+	if(eEgg){
+		eEgg = false;
+		egg.x = this.x;
+		egg.y = this.y;
+		eggDrop = true;
+		score+=10;
+	}
+}
+function collisionHero(xPos, yPos, Radius){
+	var distX = xPos - hero.x;
+	var distY = yPos - hero.y;
+	var distR = Radius + 35;
+	if (distX * distX + distY * distY <= distR * distR){
+		return true;
+	}
+}
+
+</script>
+</head>
+
+<body onload="init();" style="background-color:#D4D4D4">
+	<canvas id="canvas" width="900" height="600" style="background-color:#bdecec"></canvas>
+</body>
+</html>
