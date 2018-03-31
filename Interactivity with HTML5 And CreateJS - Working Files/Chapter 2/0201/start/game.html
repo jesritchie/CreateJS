@@ -15,6 +15,10 @@
 
 var canvas, stage, exportRoot;
 var inPlay; //to know when game is playing
+var egg;//will be used for canvas egg
+var splat;//will be used for canvas egg splat 
+var gOver;//determine when game is over
+var score;//this will update the score
 
 function init() {
 	canvas = document.getElementById("canvas");
@@ -33,7 +37,7 @@ function init() {
 function handleComplete() {
 //exportRoot is the image canvas itself
 	exportRoot = new lib.game();
-
+	//short hand ref for vars
 	stage = new Stage(canvas);
 	stage.addChild(exportRoot);
 	setTitle();
