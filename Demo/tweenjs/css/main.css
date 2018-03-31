@@ -1,0 +1,16 @@
+	h1{
+		color:red;
+	}
+	
+	.content {
+			position: relative;
+		}
+
+		.ball {
+			position: absolute;
+			width: 100px;
+			height: 100px;
+			background-color: red;
+			border-radius: 100%;
+			border: 3px solid #000;
+		}
