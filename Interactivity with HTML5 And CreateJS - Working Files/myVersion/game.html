@@ -21,7 +21,7 @@ var gOver;//determine when game is over
 var score;//this will update the score
 var hero;//this is the var for the little blue monster
 var walkPos;//this will hold the postion that the hero will walk towards
-
+var moving;//this will control whether or not the hero is moving
 function init() {
 	canvas = document.getElementById("canvas");
     //preload sounds into manifest.
@@ -85,9 +85,9 @@ function setTitle(){
 	splat.y = 550;
 	//initialize the Score
 	score = 0;
-
 	//initialize the walk postion
 	walkPos = hero.x; // sets walk to heroes x position
+	moving = false; //initialize moving as no
 
 }
 //enventObj lets CreateJS know that there is a event taking place
@@ -105,6 +105,8 @@ function groundClick(eventObj){
 	//event taking place in create js
 	//console.log(eventObj.stageX);
 	walkPos = eventObj.stageX;
+	//now moving
+	moving = true;
 }
 
 //tick function to be called by Ticker
@@ -118,24 +120,31 @@ function tick(eventObj){
 
 //function for moving the heroes
 function heroMove(){
-		//Step 1) determine if the ground has been clicked to the
-		//left or the right of the hero
-		if (walkPos < hero.x){//Move Left
-		  //step 2) remove pixels from hero each frame
-			hero.x -= 7; //take 7 px off the x position of the hero every frame
-			             //this will give the illusion of movement
-		  //step 3) change direction the hero faces.
-		  hero.scaleX = -1.75; //Due to hero export at 175% scale must match at 1.75
-											  //Normally .scaleX would be -1 to flip
+		if (moving){ //hero is moving
+				//Step 1) determine if the ground has been clicked to the
+				//left or the right of the hero
+				if (walkPos < hero.x){//Move Left
+					//step 2) remove pixels from hero each frame
+					hero.x -= 7; //take 7 px off the x position of the hero every frame
+											 //this will give the illusion of movement
+					//step 3) change direction the hero faces.
+					hero.scaleX = -1.75; //Due to hero export at 175% scale must match at 1.75
+														//Normally .scaleX would be -1 to flip
+				}
+				else{ //Move Right
+					//step 2) add pixels from hero each frame
+					hero.x += 7; //add 7 px to the x position of the hero every frame
+											 //this will give the illusion of movement
+					//step 3) change direction the hero faces.
+					hero.scaleX = 1.75; //Due to hero export at 175% scale must match at 1.75
+														//Normally .scaleX would be 1 to flip
+			}
+			var diff = walkPos-hero.x; //the difference
+			if(diff <= 5.1 && diff >-5.1){ //approximately at the postion that hero should stop
+				moving = false;
+			}
 		}
-		else{ //Move Right
-			//step 2) add pixels from hero each frame
-			hero.x += 7; //add 7 px to the x position of the hero every frame
-									 //this will give the illusion of movement
-			//step 3) change direction the hero faces.
-			hero.scaleX = 1.75; //Due to hero export at 175% scale must match at 1.75
-												//Normally .scaleX would be 1 to flip
-		}
+
 }
 
 </script>
