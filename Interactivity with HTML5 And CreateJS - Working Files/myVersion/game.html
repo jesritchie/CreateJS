@@ -20,6 +20,7 @@ var splat;//will be used for canvas egg splat
 var gOver;//determine when game is over
 var score;//this will update the score
 var hero;//this is the var for the little blue monster
+var walkPos;//this will hold the postion that the hero will walk towards
 
 function init() {
 	canvas = document.getElementById("canvas");
@@ -34,14 +35,15 @@ function init() {
 	loader.onComplete = handleComplete;
 	loader.loadManifest(manifest);
 }
+
 //At this point everything is ready and game programming can commence.
 function handleComplete() {
 //exportRoot is the image canvas itself
 	exportRoot = new lib.game();
 	egg = exportRoot.egg;      // short hand for egg
 	splat = exportRoot.splat;  // short hand for splat
-	gOver = exportRoot.gOver;  // short hand for gameOver tittle
-	hero = exportRoot.monster; // short hand for my hero
+ 	gOver = exportRoot.gOver;  // short hand for gameOver tittle
+  hero = exportRoot.monster; // short hand for my hero
 
 // make a clickable element which will be the ground
 // so that upon clicking on the ground the hero will move to the postion clicked
@@ -57,8 +59,10 @@ exportRoot.ground.onClick = groundClick;
 	//Change the screen
 	stage.update();
 
+  //Tick is something that happens every frame pre second
 	Ticker.setFPS(30);
-	Ticker.addListener(stage);
+	Ticker.addListener(window); //sets the ticker to look in this
+	                           //window for a function named tick
 }
 
 function playSound(name, loop) {
@@ -82,6 +86,9 @@ function setTitle(){
 	//initialize the Score
 	score = 0;
 
+	//initialize the walk postion
+	walkPos = hero.x; // sets walk to heroes x position
+
 }
 //enventObj lets CreateJS know that there is a event taking place
 //the click of a button
@@ -96,7 +103,39 @@ function startClick(eventObj){
 //Ground Click function
 function groundClick(eventObj){
 	//event taking place in create js
-	console.log(eventObj.stageX);
+	//console.log(eventObj.stageX);
+	walkPos = eventObj.stageX;
+}
+
+//tick function to be called by Ticker
+function tick(eventObj){
+	//as it runs detect if the game is playing or not
+	if (inPlay){//if it is do game stuff...
+		heroMove(); // moves the hero
+	}
+	stage.update(); // update the stage to make stuff happen
+}
+
+//function for moving the heroes
+function heroMove(){
+		//Step 1) determine if the ground has been clicked to the
+		//left or the right of the hero
+		if (walkPos < hero.x){//Move Left
+		  //step 2) remove pixels from hero each frame
+			hero.x -= 7; //take 7 px off the x position of the hero every frame
+			             //this will give the illusion of movement
+		  //step 3) change direction the hero faces.
+		  hero.scaleX = -1.75; //Due to hero export at 175% scale must match at 1.75
+											  //Normally .scaleX would be -1 to flip
+		}
+		else{ //Move Right
+			//step 2) add pixels from hero each frame
+			hero.x += 7; //add 7 px to the x position of the hero every frame
+									 //this will give the illusion of movement
+			//step 3) change direction the hero faces.
+			hero.scaleX = 1.75; //Due to hero export at 175% scale must match at 1.75
+												//Normally .scaleX would be 1 to flip
+		}
 }
 
 </script>
