@@ -169,9 +169,21 @@ function heroMove(){
 function enemyManager(){ //looks after how often to attack
 	aTime ++; //incease attack time by one
 	if (aTime > aFreq){ //time to attack
-		console.log("attack!");
+		//console.log("attack!");
+		eAttack(); //enemy Attack
 		aTime = 0; //reset attack time
 	}
+}
+function eAttack(){
+	enemy.scaleX = -1.3; //flip the enemy in oppiste direction
+											 // enemy scale up 130 % hence 1.3
+ //Add a TWEEN
+ //create a tween to each point x:450, y:450  pixels , which is roughly the
+ //center of the stage
+ //Next -> the time it will take is 4500 milliseconds i.e 4.5 seconds
+ //Then its going to use the ease of sine out which means it will get there
+ //slower as it gets to the end
+ Tween.get(enemy).to({x:450, y:450}, 4500, Ease.sineOut);
 }
 </script>
 </head>
