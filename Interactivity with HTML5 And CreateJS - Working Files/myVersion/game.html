@@ -33,6 +33,10 @@ var ePosX = [-95, -95, 100, 900, 1100];
 var ePosY = [90, 180, -75, -75, 0];
 var eEgg = false;
 //============================================================================\\
+
+//============= E G G   C O N T R O L    V A R I A B L E S ===================\\
+var eggDrop = false;
+//============================================================================\\
 function init() {
 	canvas = document.getElementById("canvas");
     //preload sounds into manifest.
@@ -144,6 +148,7 @@ function tick(eventObj){
 		heroMove(); // moves the hero
 		enemyManager(); // manages the enemy
 		eggControl();// manages the enemy egg
+		exportRoot.score.text=score; //update score.
 	}
 	stage.update(); // update the stage to make stuff happen
 }
@@ -210,10 +215,27 @@ function eEscape(){ // escaping after getting an egg.
 }
 function eggControl(){ //controls enemys egg
 	enemy.egg.visible = eEgg;
+	if (eggDrop){//drop the egg
+			egg.y += 4; //move the egg down towards the ground
+			if(egg.y > 550){//egg has reach the ground.
+				//now get rid of the egg
+				egg.x = -100; //hide off the screen again
+				egg.y = - 100; //hide off the screen again
+				eggDrop = false;
+				//add a splat
+			}
+	}
 }
 function eClick(eventObj){ //control for when enemy is clicked
 	if(eEgg){ //enemy has an egg showing
 		eEgg = false;
+		//add the egg at the enemys current location
+		egg.x = this.x;
+		egg.y = this.y;
+		//drop the egg to the ground
+		eggDrop = true;
+		//update Score
+		score += 10;
 	}
 
 }
