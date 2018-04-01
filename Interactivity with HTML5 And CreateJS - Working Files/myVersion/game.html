@@ -224,6 +224,15 @@ function eggControl(){ //controls  egg
 	enemy.egg.visible = eEgg;
 	if (eggDrop){//drop the egg
 			egg.y += 4; //move the egg down towards the ground
+											 //egg radius is 18 and hero is NOT already holding an egg
+			if (collisionHero(egg.x, egg.y, 18) && heroEgg == false){ //collision
+				//now catch the egg
+				score += 10; //increase score
+				heroEgg = true; //show heroes egg
+				egg.x = -100; //hide the fallen egg
+				egg.y = -100; //hide the fallen egg
+				eggDrop = false; //stop egg from dropping
+			}
 			if(egg.y > 550){//egg has reach the ground.
 				//move splat to eggs position
 				splat.x = egg.x;
@@ -258,7 +267,18 @@ function eClick(eventObj){ //control for when enemy is clicked
 		//update Score
 		score += 10;
 	}
+}
 
+function collisionHero(xPos, yPos, Radius){//coliosion handler for hero
+//	x position of the object wanted to collide with the hero
+//	y position of the object wanted to collide with the hero
+//  and the radius for that object
+	var distX = xPos - hero.x; //distance between hero and obj on x-axis
+	var distY = yPos - hero.y; //distance between hero and obj on y-axis
+	var distR = Radius + 35; //distance in the radius
+	if (distX * distX + distY * distY <= distR * distR){ //obj and hero collided
+		return true;
+	}
 }
 </script>
 </head>
