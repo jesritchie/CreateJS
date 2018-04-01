@@ -16,7 +16,7 @@
 var canvas, stage, exportRoot;
 var inPlay; //to know when game is playing
 var egg;//will be used for canvas egg
-var splat;//will be used for canvas egg splat 
+var splat;//will be used for canvas egg splat
 var gOver;//determine when game is over
 var score;//this will update the score
 
@@ -37,6 +37,9 @@ function init() {
 function handleComplete() {
 //exportRoot is the image canvas itself
 	exportRoot = new lib.game();
+	egg = exportRoot.egg; // sort hand for egg
+	splat = exportRoot.splat; // sort hand for splat
+	gOver = exportRoot.gOver; // sort hand for gameOver tittle
 	//short hand ref for vars
 	stage = new Stage(canvas);
 	stage.addChild(exportRoot);
@@ -55,6 +58,20 @@ function playSound(name, loop) {
 function setTitle(){
 	//make the button now click-able
 	exportRoot.title.button.onClick = startClick;
+	gOver.visible = false //hide game over text
+	//move the egg off the srceen -> well its still on just not in the canvas element
+	//moved slightly above and to the left
+	egg.x = -100;
+	egg.y = -100;
+	//hide the splat as well
+	//moved farther to the left then the egg since it is slightly larger
+	//550 down is actually where it is going to splat on the ground
+	//will only ever need to move it on the x-axis when it hits the ground
+	splat.x = -200;
+	splat.y = 550;
+	//initialize the Score
+	score = 0;
+
 }
 //enventObj lets CreateJS know that there is a event taking place
 //the click of a button
