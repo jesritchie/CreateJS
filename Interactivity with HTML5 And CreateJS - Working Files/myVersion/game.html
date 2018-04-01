@@ -19,6 +19,7 @@ var egg;//will be used for canvas egg
 var splat;//will be used for canvas egg splat
 var gOver;//determine when game is over
 var score;//this will update the score
+var hero;//this is the var for the little blue monster
 
 function init() {
 	canvas = document.getElementById("canvas");
@@ -37,9 +38,18 @@ function init() {
 function handleComplete() {
 //exportRoot is the image canvas itself
 	exportRoot = new lib.game();
-	egg = exportRoot.egg; // sort hand for egg
-	splat = exportRoot.splat; // sort hand for splat
-	gOver = exportRoot.gOver; // sort hand for gameOver tittle
+	egg = exportRoot.egg;      // short hand for egg
+	splat = exportRoot.splat;  // short hand for splat
+	gOver = exportRoot.gOver;  // short hand for gameOver tittle
+	hero = exportRoot.monster; // short hand for my hero
+
+// make a clickable element which will be the ground
+// so that upon clicking on the ground the hero will move to the postion clicked
+// and stop on the click postion on the ground itself.
+
+// To do the above link the export route -> ground -> onClick
+exportRoot.ground.onClick = groundClick;
+
 	//short hand ref for vars
 	stage = new Stage(canvas);
 	stage.addChild(exportRoot);
@@ -82,6 +92,13 @@ function startClick(eventObj){
 	//set inPlay to true since game is now active
 	inPlay = true;
 }
+
+//Ground Click function
+function groundClick(eventObj){
+	//event taking place in create js
+	console.log(eventObj.stageX);
+}
+
 </script>
 </head>
 
