@@ -29,6 +29,8 @@ var enemy;//this is the var for the traidactul -> bird.
 var aTime = 0;//attack time is a count that will count u how often to attack
 var aFreq;//how often to attack
 var attackSpeed;//speed of the attack itself
+var ePosX = [-95, -95, 100, 900, 1100];
+var ePosY = [90, 180, -75, -75, 0];
 //============================================================================\\
 function init() {
 	canvas = document.getElementById("canvas");
@@ -102,6 +104,9 @@ function setTitle(){
 	//======================== E N E M Y =======================================\\
 	aFreq = 350; //fequency set every 350 frames
 	attackSpeed = 4000;//attack speed will take 4 seconds.
+	var p = Math.round(Math.random()*4) // random start location
+	enemy.x = ePosX[p];
+	enemy.y = ePosY[p];
 	//==========================================================================\\
 }
 //enventObj lets CreateJS know that there is a event taking place
@@ -112,6 +117,9 @@ function startClick(eventObj){
 	//make button no longer clickable
 	//set inPlay to true since game is now active
 	inPlay = true;
+
+	//set enemy to attack straight away
+	eAttack();
 }
 
 //Ground Click function
@@ -183,7 +191,16 @@ function eAttack(){
  //Next -> the time it will take is 4500 milliseconds i.e 4.5 seconds
  //Then its going to use the ease of sine out which means it will get there
  //slower as it gets to the end
- Tween.get(enemy).to({x:450, y:450}, 4500, Ease.sineOut);
+ Tween.get(enemy).to({x:450, y:450}, 4500, Ease.sineOut).call(eEscape);
+ 																							//eEscape will move enemy back out
+}
+function eEscape(){ // escaping after getting an egg.
+	enemy.scaleX = 1.3; // flip the enemy
+	var p = Math.round(Math.random()*4); //generate random number between 0-3
+	//that number is going to choose the enemys random escape
+	//ePosX ePosY will hold random escape postions for enemey
+  Tween.get(enemy).to({x:ePosX[p], y:ePosY[p]}, attackSpeed, Ease.sineOut).call(eEscape);
+
 }
 </script>
 </head>
