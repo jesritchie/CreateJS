@@ -56,6 +56,7 @@ function handleComplete() {
  	gOver = exportRoot.gOver;  // short hand for gameOver tittle
   hero = exportRoot.monster; // short hand for my hero
 	enemy = exportRoot.bird; // short hand for the enemy
+	enemy.onClick = eClick; //enemy click
 
 // make a clickable element which will be the ground
 // so that upon clicking on the ground the hero will move to the postion clicked
@@ -185,30 +186,36 @@ function enemyManager(){ //looks after how often to attack
 	}
 }
 function eAttack(){
+
 	eEgg = false;// ensure egg is invasiabe.
-	enemy.scaleX = -1.3; //flip the enemy in oppiste direction
+	enemy.scaleX = -1.3;//flip the enemy in oppiste direction
 											 // enemy scale up 130 % hence 1.3
- //Add a TWEEN
- //create a tween to each point x:450, y:450  pixels , which is roughly the
- //center of the stage
- //Next -> the time it will take is 4500 milliseconds i.e 4.5 seconds
- //Then its going to use the ease of sine out which means it will get there
- //slower as it gets to the end
- Tween.get(enemy).to({x:450, y:450}, 4500, Ease.sineOut).call(eEscape);
- 																							//eEscape will move enemy back out
+	//Add a TWEEN
+	//create a tween to each point x:450, y:450  pixels , which is roughly the
+	//center of the stage
+	//Next -> the time it will take is 4500 milliseconds i.e 4.5 seconds
+	//Then its going to use the ease of sine out which means it will get there
+	//slower as it gets to the end
+	Tween.get(enemy).to({x:450, y:450}, 4500, Ease.sineOut).call(eEscape);	//eEscape will move enemy back out
+
 }
 function eEscape(){ // escaping after getting an egg.
-	eEgg = true; // shows the enemy carrying the egg
-	enemy.scaleX = 1.3; // flip the enemy
+	eEgg = true;// shows the enemy carrying the egg
+	enemy.scaleX = 1.3;// flip the enemy
 	var p = Math.round(Math.random()*4); //generate random number between 0-3
 	//that number is going to choose the enemys random escape
 	//ePosX ePosY will hold random escape postions for enemey
-  Tween.get(enemy).to({x:ePosX[p], y:ePosY[p]}, attackSpeed, Ease.sineOut).call(eEscape);
+	Tween.get(enemy).to({x:ePosX[p], y: ePosY[p]}, attackSpeed, Ease.sineOut);
 
 }
-
-function eggControl(){
+function eggControl(){ //controls enemys egg
 	enemy.egg.visible = eEgg;
+}
+function eClick(eventObj){ //control for when enemy is clicked
+	if(eEgg){ //enemy has an egg showing
+		eEgg = false;
+	}
+
 }
 </script>
 </head>
