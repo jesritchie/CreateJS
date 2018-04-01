@@ -19,9 +19,17 @@ var egg;//will be used for canvas egg
 var splat;//will be used for canvas egg splat
 var gOver;//determine when game is over
 var score;//this will update the score
+//================== H E R O E S   V A R I A B L E S =========================\\
 var hero;//this is the var for the little blue monster
 var walkPos;//this will hold the postion that the hero will walk towards
 var moving;//this will control whether or not the hero is moving
+//============================================================================\\
+//=================== E N E M Y    V A R I A B L E S =========================\\
+var enemy;//this is the var for the traidactul -> bird.
+var aTime = 0;//attack time is a count that will count u how often to attack
+var aFreq;//how often to attack
+var attackSpeed;//speed of the attack itself
+//============================================================================\\
 function init() {
 	canvas = document.getElementById("canvas");
     //preload sounds into manifest.
@@ -44,6 +52,7 @@ function handleComplete() {
 	splat = exportRoot.splat;  // short hand for splat
  	gOver = exportRoot.gOver;  // short hand for gameOver tittle
   hero = exportRoot.monster; // short hand for my hero
+	enemy = exportRoot.bird; // short hand for the enemy
 
 // make a clickable element which will be the ground
 // so that upon clicking on the ground the hero will move to the postion clicked
@@ -85,10 +94,15 @@ function setTitle(){
 	splat.y = 550;
 	//initialize the Score
 	score = 0;
+	//======================== H E R O =========================================\\
 	//initialize the walk postion
 	walkPos = hero.x; // sets walk to heroes x position
 	moving = false; //initialize moving as no
-
+	//==========================================================================\\
+	//======================== E N E M Y =======================================\\
+	aFreq = 350; //fequency set every 350 frames
+	attackSpeed = 4000;//attack speed will take 4 seconds.
+	//==========================================================================\\
 }
 //enventObj lets CreateJS know that there is a event taking place
 //the click of a button
@@ -118,6 +132,7 @@ function tick(eventObj){
 	//as it runs detect if the game is playing or not
 	if (inPlay){//if it is do game stuff...
 		heroMove(); // moves the hero
+		enemyManager(); // manages the enemy
 	}
 	stage.update(); // update the stage to make stuff happen
 }
@@ -151,7 +166,13 @@ function heroMove(){
 		}
 
 }
-
+function enemyManager(){ //looks after how often to attack
+	aTime ++; //incease attack time by one
+	if (aTime > aFreq){ //time to attack
+		console.log("attack!");
+		aTime = 0; //reset attack time
+	}
+}
 </script>
 </head>
 
