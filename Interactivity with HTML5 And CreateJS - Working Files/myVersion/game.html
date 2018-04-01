@@ -146,6 +146,7 @@ function heroMove(){
 			var diff = walkPos-hero.x; //the difference
 			if(diff <= 5.1 && diff >-5.1){ //approximately at the postion that hero should stop
 				moving = false;
+				hero.gotoAndStop("idle");//stops character from walking and now is idle
 			}
 		}
 
