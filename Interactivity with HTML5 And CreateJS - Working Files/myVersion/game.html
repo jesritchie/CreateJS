@@ -107,6 +107,10 @@ function groundClick(eventObj){
 	walkPos = eventObj.stageX;
 	//now moving
 	moving = true;
+
+	//adding animation
+	hero.gotoAndStop("walk"); //this is works because its based on the
+	 											    //flash framework easy eh
 }
 
 //tick function to be called by Ticker
