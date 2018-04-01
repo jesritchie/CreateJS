@@ -23,6 +23,7 @@ var score;//this will update the score
 var hero;//this is the var for the little blue monster
 var walkPos;//this will hold the postion that the hero will walk towards
 var moving;//this will control whether or not the hero is moving
+var heroEgg; // conrols the heros egg he carries
 //============================================================================\\
 //=================== E N E M Y    V A R I A B L E S =========================\\
 var enemy;//this is the var for the traidactul -> bird.
@@ -36,6 +37,7 @@ var eEgg = false;
 
 //============= E G G   C O N T R O L    V A R I A B L E S ===================\\
 var eggDrop = false;
+var eggSplat;
 //============================================================================\\
 function init() {
 	canvas = document.getElementById("canvas");
@@ -106,6 +108,7 @@ function setTitle(){
 	//initialize the walk postion
 	walkPos = hero.x; // sets walk to heroes x position
 	moving = false; //initialize moving as no
+	heroEgg = false; //hide the egg
 	//==========================================================================\\
 	//======================== E N E M Y =======================================\\
 	aFreq = 350; //fequency set every 350 frames
@@ -113,6 +116,9 @@ function setTitle(){
 	var p = Math.round(Math.random()*4) // random start location
 	enemy.x = ePosX[p];
 	enemy.y = ePosY[p];
+	//==========================================================================\\
+	//============================ E G G =======================================\\
+	eggSplat = false;
 	//==========================================================================\\
 }
 //enventObj lets CreateJS know that there is a event taking place
@@ -155,6 +161,7 @@ function tick(eventObj){
 
 //function for moving the heroes
 function heroMove(){
+hero.egg.visible = heroEgg;
 		if (moving){ //hero is moving
 				//Step 1) determine if the ground has been clicked to the
 				//left or the right of the hero
@@ -213,17 +220,31 @@ function eEscape(){ // escaping after getting an egg.
 	Tween.get(enemy).to({x:ePosX[p], y: ePosY[p]}, attackSpeed, Ease.sineOut);
 
 }
-function eggControl(){ //controls enemys egg
+function eggControl(){ //controls  egg
 	enemy.egg.visible = eEgg;
 	if (eggDrop){//drop the egg
 			egg.y += 4; //move the egg down towards the ground
 			if(egg.y > 550){//egg has reach the ground.
+				//move splat to eggs position
+				splat.x = egg.x;
 				//now get rid of the egg
 				egg.x = -100; //hide off the screen again
 				egg.y = - 100; //hide off the screen again
 				eggDrop = false;
-				//add a splat
+				splat.gotoAndPlay("sound");//add a splat sound -> also cause slight tween animation
+				eggSplat = true; //update eggSplat
+
 			}
+	}
+	if (eggSplat){//egg splated.
+		//make egg more trasparent with each frames
+		//alpha property starts at 1 and goes to 0
+		splat.alpha -= 0.08; //8% removed each frame
+		if (splat.alpha <= 0 ){//its invisable.
+			splat.x = -200; // move it back off the screen.
+			splat.alpha = 1; // remake it visable.
+			eggSplat = false; //reset to egg not being splatted.
+		}
 	}
 }
 function eClick(eventObj){ //control for when enemy is clicked
