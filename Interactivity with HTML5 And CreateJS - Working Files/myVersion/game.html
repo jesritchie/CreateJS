@@ -15,10 +15,10 @@
 
 var canvas, stage, exportRoot;
 var inPlay; //to know when game is playing
-var egg;//will be used for canvas egg
 var splat;//will be used for canvas egg splat
 var gOver;//determine when game is over
 var score;//this will update the score
+var nest; //this is a var vor the nest
 //================== H E R O E S   V A R I A B L E S =========================\\
 var hero;//this is the var for the little blue monster
 var walkPos;//this will hold the postion that the hero will walk towards
@@ -34,10 +34,12 @@ var ePosX = [-95, -95, 100, 900, 1100];
 var ePosY = [90, 180, -75, -75, 0];
 var eEgg = false;
 //============================================================================\\
-
 //============= E G G   C O N T R O L    V A R I A B L E S ===================\\
+var egg;//will be used for canvas egg
 var eggDrop = false;
-var eggSplat;
+var eggSplat;   //if egg is splatten
+var eggCounter; //how many eggs on the screen
+
 //============================================================================\\
 function init() {
 	canvas = document.getElementById("canvas");
@@ -63,7 +65,7 @@ function handleComplete() {
   hero = exportRoot.monster; // short hand for my hero
 	enemy = exportRoot.bird; // short hand for the enemy
 	enemy.onClick = eClick; //enemy click
-
+	nest = exportRoot.nest;
 // make a clickable element which will be the ground
 // so that upon clicking on the ground the hero will move to the postion clicked
 // and stop on the click postion on the ground itself.
@@ -119,6 +121,7 @@ function setTitle(){
 	//==========================================================================\\
 	//============================ E G G =======================================\\
 	eggSplat = false;
+	eggCounter = 5; //start with 5 eggs
 	//==========================================================================\\
 }
 //enventObj lets CreateJS know that there is a event taking place
@@ -187,7 +190,14 @@ hero.egg.visible = heroEgg;
 				hero.gotoAndStop("idle");//stops character from walking and now is idle
 			}
 		}
-
+		//collision between hero and the nest
+															     //nest radius is 50 and hero must have an egg
+		if (collisionHero(nest.x, nest.y, 50)&& heroEgg == true){// hero collide with nest
+			score += 10; // update socre
+			heroEgg = false; //hide heros egg he was carrying
+			eggCounter ++; //add a egg to the counter
+			nest["egg"+eggCounter].visable = true; //put the egg back in the nest.
+		}
 }
 function enemyManager(){ //looks after how often to attack
 	aTime ++; //incease attack time by one
@@ -212,6 +222,8 @@ function eAttack(){
 
 }
 function eEscape(){ // escaping after getting an egg.
+	nest["egg"+eggCounter].visible = false; // hide an egg -> its gone with the bird.
+	eggCounter --; // remove an egg
 	eEgg = true;// shows the enemy carrying the egg
 	enemy.scaleX = 1.3;// flip the enemy
 	var p = Math.round(Math.random()*4); //generate random number between 0-3
