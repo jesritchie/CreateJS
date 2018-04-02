@@ -47,7 +47,15 @@
 			sunShape.x = 25;
 			sunShape.y = 25;
 			stage.addChild(sunShape);
-			//tweening
+			titleText = new createjs.Text(
+				"Hello CreateJS",	   	// Text
+				"bold 36px Verdana",	// CSS font attributes
+				"#201A66"				      // Color midnight blue
+			);
+			titleText.x = (stage.canvas.width - titleText.getMeasuredWidth()) / 2;   //x position
+			titleText.y = (stage.canvas.height - titleText.getMeasuredHeight()) / 2; //y position
+			titleText.shadow = new createjs.Shadow("#000", 5, 5, 10);
+			stage.addChild(titleText);
 
 	//tween loop property restores a sun shape x and y properties and to method is called again..
 			createjs.Tween.get(sunShape, {loop:true})		//the get method stores the properties of the sun shape obj
