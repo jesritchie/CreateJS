@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://code.createjs.com/createjs-2015.05.21.min.js"></script>
-<title>Lon Hosford Basic CreateJS Shape Animation</title>
+<title>Pickup && Drop</title>
 <script>
 	var stage;
 	function init() {
 		stage = new createjs.Stage("stage-canvas");
+
+		var isDragging = false;
 
 		var circleShape = new createjs.Shape();
 		circleShape.graphics.beginFill("#F00");
@@ -45,18 +47,19 @@
 					stage.update();
 				});
 
-		        stage.addEventListener("stagemousedown", function(e) { //mouse down listener
+        stage.addEventListener("stagemousedown", function(e) { //mouse down listener
 					if (stage.getObjectUnderPoint(e.stageX, e.stageY)
 						== circleShape){ // if mouse down is on circle
-						isDragging = true;
+						//isDragging = true;
+						isDragging = !isDragging;
 					}
 					messageText.write(e);//stagemousedown
 					stage.update();
 				});
 
-		        stage.addEventListener("stagemouseup", function(e) {//mouse up listener
-					isDragging = false; //no longer dragging
-					messageText.write(e); //stagemouseup
+		   stage.addEventListener("stagemouseup", function(e) {//mouse up listener
+					//isDragging = false;
+					messageText.write(e);
 					stage.update();
 				});
 
