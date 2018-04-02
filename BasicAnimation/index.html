@@ -20,10 +20,10 @@
 
 	//tween loop property restores a sun shape x and y properties and to method is called again..
 			createjs.Tween.get(sunShape, {loop:true})		//the get method stores the properties of the sun shape obj
-					.to({x:525, y:375}, 3000, createjs.Ease.bounceOut) //to method animates the sun shapes x and y properties to the bottom right of the stage
+					.to({x:525, y:375}, 3000, createjs.Ease.quintIn) //to method animates the sun shapes x and y properties to the bottom right of the stage
 							//rase methods are passbed by ref so no parenthese needded
 					.wait(2000) //wait method causes a delay foring the tween to delay before doing the next action
-					.to({x:25, y:25}, 3000); //moves the sun shape obj back to the top left
+					.to({x:25, y:25}, 3000, createjs.Ease.circOut); //moves the sun shape obj back to the top left
 			createjs.Ticker.addEventListener("tick", tickHandler);
 			stage.update();
 		}
