@@ -11,19 +11,19 @@
 		->Relative shape positions and stoke params
 **/
 	var stage;
-	function init()
+	function init() 
 	{
 		stage = new createjs.Stage("stage-canvas");
-
+		
 		var circleShape = new createjs.Shape();
 		circleShape.graphics.beginStroke("#00F");
 		circleShape.graphics.setStrokeStyle(25);
 		circleShape.graphics.drawCircle(0, 0, 75);
 		circleShape.graphics.endStroke();
-		circleShape.graphics.beginStroke("#FF0");
-		circleShape.graphics.setStrokeStyle(1);
-		circleShape.graphics.drawCircle(0, 0, 75);
-		circleShape.graphics.endStroke();
+		//circleShape.graphics.beginStroke("#FF0");
+		//circleShape.graphics.setStrokeStyle(1);
+		//circleShape.graphics.drawCircle(0, 0, 75);
+		//circleShape.graphics.endStroke();
 		circleShape.x = stage.canvas.width - 75 - 12.5;
 		circleShape.y = 75 + 12.5;
 		stage.addChild(circleShape); //add circle to stage
@@ -33,27 +33,60 @@
 		rectShape.graphics.setStrokeStyle(25);
 		rectShape.graphics.drawRect(0, 0, 150, 150);
 		rectShape.graphics.endStroke();
-		rectShape.graphics.beginStroke("#00F");
-		rectShape.graphics.setStrokeStyle(1);
-		rectShape.graphics.drawRect(0, 0, 150, 150);
-		rectShape.graphics.endStroke();
+		//rectShape.graphics.beginStroke("#00F");
+		//rectShape.graphics.setStrokeStyle(1);
+		//rectShape.graphics.drawRect(0, 0, 150, 150);
+		//rectShape.graphics.endStroke();
 		rectShape.x = 12.5;
 		rectShape.y = 12.5;
-		stage.addChild(rectShape); // add square to stage
+		stage.addChild(rectShape); //add square to stage
 
 		// Visual overlays for illustration
 		//var gridShape = getGrid(null, null, null, "#858585", "#0276FD", "#7F00FF");
 		//stage.addChild(gridShape);
 
+		createjs.Tween.get(circleShape)
+			.to({	x:stage.canvas.width * .5,
+					y:stage.canvas.height * .5}, 
+					2000, createjs.Ease.quadInOut)
+			.wait(4000)
+			.to({	y:stage.canvas.height - 75 - 12.5}, 
+					2000, createjs.Ease.bounceOut)
+			.wait(4000)
+			.to({	x:stage.canvas.width * .5 + 75, 
+					y:stage.canvas.height - 75 - 12.5}, 
+					500, createjs.Ease.bounceOut);	
+		createjs.Tween.get(rectShape)
+			.to({ 	x:stage.canvas.width * .5, 
+					y:stage.canvas.height * .5}, 
+					2000, createjs.Ease.quadInOut)
+			.to({ 	rotation:-135}, 
+					2000, createjs.Ease.elasticInOut)
+			.to({	y:stage.canvas.height * .5 + 150 * Math.sqrt(2) / 2}, 
+					2000, createjs.Ease.bounceOut)					
+			.to({	y:stage.canvas.height - 25 * Math.sqrt(2) / 2}, 
+					2000, createjs.Ease.bounceOut)				
+			.to({	rotation:-120}, 
+					4000, createjs.Ease.elasticIn)				
+			.to({	rotation:-90,
+					y:stage.canvas.height - 12.5}, 
+					500, createjs.Ease.bounceOut)			
+			.to({	alpha:.6}, 500)			
+			.to({	alpha:1}, 2000);	
+
+		//console.log(150 * Math.sqrt(2) / 2);
+		//console.log(stage.canvas.height * .5 + 150 * Math.sqrt(2) / 2);
+		//console.log(stage.canvas.height - 150 * Math.sqrt(2) / 2);
 
 		createjs.Ticker.setFPS(60);
 		createjs.Ticker.addEventListener("tick", tickHandler);
-	}
+	}	
 	function tickHandler(e)
 	{
 		stage.update();
 		//console.log(createjs.Ticker.getMeasuredFPS());
-	}
+	}		
+		
 
 </script>
 <style>
