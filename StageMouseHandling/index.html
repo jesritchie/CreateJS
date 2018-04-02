@@ -3,36 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <script src="http://code.createjs.com/createjs-2013.12.12.min.js"></script>
-<title>Lon Hosford Basic CreateJS Shape Animation</title>
+<title>Stage Mouse Event Handling</title>
 <script>
-	var stage;
-	function init() {
-		stage = new createjs.Stage("stage-canvas");
+var stage;
+function init() {
+	stage = new createjs.Stage("stage-canvas");
 
-		var circleShape = new createjs.Shape();
-		circleShape.graphics.beginFill("#00F")
-		circleShape.graphics.drawCircle(0, 0, 100);
-		circleShape.x = stage.canvas.width * .5;
-		circleShape.y = stage.canvas.height * .5;
-		stage.addChild(circleShape);
+	var circleShape = new createjs.Shape();
+	circleShape.graphics.beginFill("#00F")
+	circleShape.graphics.drawCircle(0, 0, 100);
+	circleShape.x = stage.canvas.width * .5;
+	circleShape.y = stage.canvas.height * .5;
+	stage.addChild(circleShape);
 
-		var promptText = new createjs.Text("Click The Mouse", 
-			"bold 48px Arial", "#000");
-		promptText.x = stage.canvas.width * .5 
-			- promptText.getMeasuredWidth() / 2;
-		stage.addChild(promptText);
-		
-		var messageText = new createjs.Text("...waiting...", 
-			"24px Arial", "#000");
-		messageText.y = stage.canvas.height 
-			- messageText.getMeasuredHeight() - 5; 
-		stage.addChild(messageText);
+	var promptText = new createjs.Text("Click and Move Mouse",
+		"bold 48px Arial", "#000");
+	promptText.x = stage.canvas.width * .5
+		- promptText.getMeasuredWidth() / 2;
+	stage.addChild(promptText);
 
+	var messageText = new createjs.Text("...waiting...",
+		"24px Arial", "#000");
+	messageText.y = stage.canvas.height
+		- messageText.getMeasuredHeight() - 5;
+	stage.addChild(messageText);
 
-    
+	function eventUpdate(e){ //update stage with position
+				//console.log(e);
+		messageText.text = e.type
+			+ " | x:" + e.stageX
+			+ " y:" + e.stageY;
+		messageText.x = stage.canvas.width * .5
+			- messageText.getMeasuredWidth() / 2;
 		stage.update();
 	}
+//mouse down
+	stage.addEventListener("stagemousedown", function(e){
+				eventUpdate(e);
+	});
+//mouse up
+	stage.addEventListener("stagemouseup", function(e){
+				eventUpdate(e);
+	});
+//mouse move
+	stage.addEventListener("stagemousemove", function(e){
+				eventUpdate(e);
+	});
 
+	stage.update();
+}
 </script>
 <style>
 	body {
