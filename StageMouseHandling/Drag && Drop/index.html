@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://code.createjs.com/createjs-2015.05.21.min.js"></script>
+<title>Lon Hosford Basic CreateJS Shape Animation</title>
+<script>
+	var stage;
+	function init() {
+		stage = new createjs.Stage("stage-canvas");
+
+		var circleShape = new createjs.Shape();
+		circleShape.graphics.beginFill("#F00");
+		circleShape.graphics.drawCircle(0, 0, 50);
+		circleShape.x = 50;
+		circleShape.y = stage.canvas.height - 50;
+		stage.addChild(circleShape);	 // add circle to the stage
+
+		var messageText = new createjs.Text(
+			"...waiting...",
+			"24px Arial", "#000");
+		messageText.y = stage.canvas.height - messageText.getMeasuredHeight() - 5;
+		stage.addChild(messageText); // add waiting <- bottom left message to the stage.
+
+		var promptText = new createjs.Text(
+			"Start",
+			"bold 30px Arial", "#000");
+		promptText.x = stage.canvas.width * .5 - promptText.getMeasuredWidth() / 2;
+		stage.addChild(promptText); // add start <- prompt to the stage.
+
+
+
+		stage.update();
+	}
+</script>
+<style>
+	body {
+		margin: 0 ;
+		padding: 15px;
+		background-color: #ccc;
+	}
+	canvas {
+		border: solid 2px #000;
+		background-color: #fff;
+		display: block;
+		margin: 0px auto 0px auto;
+		padding-left: 0;
+		padding-right: 0;
+	}
+</style>
+</head>
+<body onLoad="init();">
+<canvas id="stage-canvas" width="550" height="400">
+	This web browser does not support canvas.
+</canvas>
+</body>
+</html>
