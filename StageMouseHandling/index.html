@@ -40,24 +40,31 @@ function init()
 		- promptText.getMeasuredWidth() / 2;
 	stage.addChild(promptText);
 
+	var duration = 750;
 	function stageMouseHandler(e){
 		var isPaused = e.type == "stagemouseup";
-		var rotationTo, duration;
+		var rotationTo;
 		if ( e.type == "stagemousedown" ){
 			rotationTo = rectShape.rotation
 				+ (rectShape.rotation > 0 ? -360 : 360);
-			duration = stage.canvas.width - e.stageX + 500;
 			messageText.text = "rectShape.rotation: "
 				+  Math.floor(rectShape.rotation)
 				+ " | rotationTo: " +  Math.floor(rotationTo)
 				+ " | duration: " + duration;
 		}
-		createjs.Tween.get(rectShape,
-			{loop:true, paused:isPaused, override:true})
-			.to({rotation:rotationTo}, duration);
+		if ( e.type == "stagemousemove" ){
+			duration = stage.canvas.width - e.stageX + 500;
+		}
+		else
+		{
+			createjs.Tween.get(rectShape,
+				{loop:true, paused:isPaused, override:true})
+				.to({rotation:rotationTo}, duration);
+		}
 	}
 	stage.addEventListener("stagemousedown", stageMouseHandler);
 	stage.addEventListener("stagemouseup", stageMouseHandler);
+	stage.addEventListener("stagemousemove", stageMouseHandler);
 
 	createjs.Ticker.setFPS(60);
 	createjs.Ticker.addEventListener("tick", tickHandler);
