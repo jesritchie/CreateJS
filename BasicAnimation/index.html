@@ -54,15 +54,22 @@
 			);
 			titleText.regX = titleText.getMeasuredWidth() / 2;
 			titleText.regY = titleText.getMeasuredHeight() / 2;
-			titleText.x = stage.canvas.width / 2;
+			//titleText.x = stage.canvas.width / 2;
+			titleText.x = -titleText.getMeasuredWidth();
 			titleText.y = stage.canvas.height / 2;
+			//titleText.y = -titleText.getMeasuredHeight();
 			titleText.shadow = new createjs.Shadow("#000", 5, 5, 10);
 			stage.addChild(titleText);
-			createjs.Tween.get(titleText, {loop:true})
-					.to({rotation:360}, 1800, createjs.Ease.bounceOut)
-					.wait(1000)
-					.to({rotation:0}, 1800, createjs.Ease.quintIn)
-					.wait(1000);
+			var targetX1 = stage.canvas.width ;
+			var targetX2 = stage.canvas.width / 2;
+			var targetX3 = -titleText.getMeasuredWidth();
+			createjs.Tween.get(titleText, {loop:false})
+					.wait(500)
+					.to({x:targetX1}, 1000, createjs.Ease.backOut)
+					.wait(1100)
+					.to({x:targetX2}, 1000, createjs.Ease.bounceOut)
+					.wait(1450)
+					.to({x:targetX3}, 1000, createjs.Ease.backOut);
 			createjs.Tween.get(sunShape, {loop:true})
 					.to({x:525, y:375}, 3000, createjs.Ease.quintIn)
 					.wait(2000)
