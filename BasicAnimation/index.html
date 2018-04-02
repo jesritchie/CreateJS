@@ -6,7 +6,7 @@
 <title>Lon Hosford Basic CreateJS Shape Animation</title>
 <script>
 		var stage, sunShape;
-		function init() 
+		function init()
 		{
 			stage = new createjs.Stage("stage-canvas");
 			sunShape = new createjs.Shape();
@@ -22,10 +22,11 @@
 			createjs.Ticker.addEventListener("tick", tickHandler);
 			stage.update();
 		}
-		
+
 		function tickHandler(e)
 		{
 			stage.update();
+			console.log(createjs.Ticker.getMeasuredFPS());
 		}
 </script>
 <style>
