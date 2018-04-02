@@ -3,37 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <script src="http://code.createjs.com/createjs-2013.12.12.min.js"></script>
-<title>Lon Hosford Basic CreateJS Shape Animation</title>
+<title>Ticker Animation</title>
 <script>
-		var stage, circleShape, messageText;
-		function init(){
-			stage = new createjs.Stage("stage-canvas");
+var stage, circleShape, messageText;
+function init(){
+	stage = new createjs.Stage("stage-canvas");
 
-			messageText = new createjs.Text(
-				"...waiting...", "24px Arial", "#000");
-			messageText.y = stage.canvas.height - messageText.getMeasuredHeight() - 5;
-			stage.addChild(messageText);
+	messageText = new createjs.Text(
+		"...waiting...", "24px Arial", "#000");
+	messageText.y = stage.canvas.height - messageText.getMeasuredHeight() - 5;
+	stage.addChild(messageText);
 
-			circleShape = new createjs.Shape();
-			circleShape.graphics.beginFill("#000");
-			circleShape.graphics.drawCircle(0, 0, 50);
-			circleShape.graphics.endFill();
-			circleShape.graphics.beginFill("#FFF");
-			circleShape.graphics.drawCircle(0, 0, 25);
-			circleShape.graphics.endFill();
-			circleShape.graphics.beginFill("#000");
-			circleShape.graphics.drawCircle(0, 0, 15);
-			circleShape.graphics.endFill();
-			circleShape.x = 50;
-			circleShape.y = stage.canvas.height * .5;
-			stage.addChild(circleShape); //add circle to stage
+	circleShape = new createjs.Shape();
+	circleShape.graphics.beginFill("#000");
+	circleShape.graphics.drawCircle(0, 0, 50);
+	circleShape.graphics.endFill();
+	circleShape.graphics.beginFill("#FFF");
+	circleShape.graphics.drawCircle(0, 0, 25);
+	circleShape.graphics.endFill();
+	circleShape.graphics.beginFill("#000");
+	circleShape.graphics.drawCircle(0, 0, 15);
+	circleShape.graphics.endFill();
+	circleShape.x = 50;
+	circleShape.y = stage.canvas.height * .5;
+	stage.addChild(circleShape); //add circle tp stage
 
-			createjs.Ticker.setFPS(60);
-			createjs.Ticker.addEventListener("tick", tickHandler);
-		}
-		function tickHandler(e){
-			stage.update();
-		}
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.addEventListener("tick", tickHandler);
+}
+function tickHandler(e){ // ticker class
+	if (circleShape.x < stage.canvas.width - 50){
+		circleShape.x += 4; //move circle along x-axis
+		messageText.text = "Ticks: " + createjs.Ticker.getTicks()
+			+ " Time: " + Math.floor(createjs.Ticker.getTime());
+	}
+	stage.update();
+}
 </script>
 <style>
 	body {
