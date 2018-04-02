@@ -1,15 +1,15 @@
 //Using EaselJS.
 
   function init() {
-    // Define a stage by creating a new Stage instance, 
-	// passing in the canvas element's ID. 
-	// This stage will hold all of the display objects and act as the 
+  // Define a stage by creating a new Stage instance, 
+	// passing in the canvas element's ID.
+	// This stage will hold all of the display objects and act as the
 	// visual container to the project.
 	var stage = new createjs.Stage("demoCanvas");
-	
-	// Creating a shape. 
-	// First, a new Shape instance. 
-	// Then use shape's graphics API to give it color and bounds. 
+
+	// Creating a shape.
+	// First, a new Shape instance.
+	// Then use shape's graphics API to give it color and bounds.
 	// Position it on the canvas with x and y coordinates, and add it to the stage.
 	var circle = new createjs.Shape();
 	//Face circle
@@ -32,7 +32,7 @@
 	circle.x = 100;
 	circle.y = 100;
 	stage.addChild(circle);
-	//left eye 
+	//left eye
 	circle.graphics.beginFill("Brown").drawCircle(0, 0, 50);
 	circle.x = 100;
 	circle.y = 100;
@@ -42,7 +42,7 @@
 	circle.x = 100;
 	circle.y = 100;
 	stage.addChild(circle);
-	//Right eye 
+	//Right eye
 	circle.graphics.beginFill("Brown").drawCircle(200, 0, 50);
 	circle.x = 100;
 	circle.y = 100;

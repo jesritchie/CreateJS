@@ -1,12 +1,12 @@
 /*
-		Using SoundJS	
+		Using SoundJS
 */
 
-//For this basic example, there is one sound file. put the sound ID in the global scope for ease of access.
+//sound ID's in the global scope for ease of access.
   var soundThunder = "Thunder";
   var soundPlane = "Plane";
   var soundLaser = "Laser";
-//In the document head, access the Sound class and call the registerSound() method, 
+//In the document head, access the Sound class and call the registerSound() method,
 //passing in the path to our file and the ID that we want to be associated with it.
   function loadSound () {
 	createjs.Sound.registerSound("./ThunderClap.mp3", soundThunder);
