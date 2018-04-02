@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://code.createjs.com/createjs-2013.12.12.min.js"></script>
+<script src="assets/grid.js"></script>
+<title>Lon Hosford Basic CreateJS Shape Animation</title>
+<script>
+/**
+		Positioning and Tweening with Shape Drawing Methods
+		->Relative shape positions and stoke params
+**/
+	var stage;
+	function init()
+	{
+		stage = new createjs.Stage("stage-canvas");
+
+		var circleShape = new createjs.Shape();
+		circleShape.graphics.beginStroke("#00F");
+		circleShape.graphics.setStrokeStyle(25);
+		circleShape.graphics.drawCircle(0, 0, 75);
+		circleShape.graphics.endStroke();
+		circleShape.graphics.beginStroke("#FF0");
+		circleShape.graphics.setStrokeStyle(1);
+		circleShape.graphics.drawCircle(0, 0, 75);
+		circleShape.graphics.endStroke();
+		circleShape.x = stage.canvas.width - 75 - 12.5;
+		circleShape.y = 75 + 12.5;
+		stage.addChild(circleShape); //add circle to stage
+
+		var rectShape = new createjs.Shape();
+		rectShape.graphics.beginStroke("#F00");
+		rectShape.graphics.setStrokeStyle(25);
+		rectShape.graphics.drawRect(0, 0, 150, 150);
+		rectShape.graphics.endStroke();
+		rectShape.graphics.beginStroke("#00F");
+		rectShape.graphics.setStrokeStyle(1);
+		rectShape.graphics.drawRect(0, 0, 150, 150);
+		rectShape.graphics.endStroke();
+		rectShape.x = 12.5;
+		rectShape.y = 12.5;
+		stage.addChild(rectShape); // add square to stage
+
+		// Visual overlays for illustration
+		//var gridShape = getGrid(null, null, null, "#858585", "#0276FD", "#7F00FF");
+		//stage.addChild(gridShape);
+
+
+		createjs.Ticker.setFPS(60);
+		createjs.Ticker.addEventListener("tick", tickHandler);
+	}
+	function tickHandler(e)
+	{
+		stage.update();
+		//console.log(createjs.Ticker.getMeasuredFPS());
+	}
+
+</script>
+<style>
+	body {
+		margin: 0 ;
+		padding: 15px;
+		background-color: #ccc;
+	}
+	canvas {
+		border: solid 2px #000;
+		background-color: #fff;
+		display: block;
+		margin: 0px auto 0px auto;
+		padding-left: 0;
+		padding-right: 0;
+	}
+</style>
+</head>
+<body onLoad="init();">
+<canvas id="stage-canvas" width="550" height="400">
+	This web browser does not support canvas.
+</canvas>
+</body>
+</html>
