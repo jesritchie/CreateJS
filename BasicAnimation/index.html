@@ -9,6 +9,27 @@
 		function init()
 		{
 			stage = new createjs.Stage("stage-canvas");
+			//Arg 1       -> color array
+			//Arg 2       -> array of precentages for gradient distance wheree each color fully appears
+			//Last 4 Args -> start and end points for imaginary gradient line that
+			//               defines the gradient distance and direction
+			var bgShape = new createjs.Shape();
+			bgShape.graphics.beginLinearGradientFill(
+				["#728FCE", "#DEE0D5", "#DEE0D5", "#F4A460"], 	// Colors Light Steel Blue, Moon Mist 2x, Sandy Brown
+				[.2, .6, .63, .9], 								// Color ratios of gradient line
+				0, 0, 											// First point of gradient line
+				0, stage.canvas.height							// Second point of the gradient line.
+			);
+			bgShape.graphics.drawRect(
+				0, 					// x
+				0, 					// y
+				stage.canvas.width, // width
+				stage.canvas.height	// height
+				);
+			bgShape.graphics.endFill();
+			stage.addChild(bgShape);
+			//N O T E : the sequence you add children to the easeljs container determinsd the layering on the canvas
+
 			sunShape = new createjs.Shape();
 			sunShape.graphics.beginFill("#F00");
 			sunShape.graphics.drawCircle(0, 0, 25);
