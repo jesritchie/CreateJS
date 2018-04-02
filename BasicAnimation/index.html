@@ -31,7 +31,18 @@
 			//N O T E : the sequence you add children to the easeljs container determinsd the layering on the canvas
 
 			sunShape = new createjs.Shape();
-			sunShape.graphics.beginFill("#F00");
+			sunShape.graphics.beginRadialGradientFill(
+				["#F00","#FCD440"], // Colors Red, Gorse
+				[0, 1],     		// Gradient positions for colors.
+				0, 					// x0 Inner circle center x position.
+				0, 					// y0 Inner circle center y position.
+				5, 					// r0 Inner circle radius.
+				0, 					// x1 Outer circle center x position
+				0,					// y1 Outer circle center y position.
+				25					// r1 Outer circle radius.
+				);
+			sunShape.graphics.drawCircle(0, 0, 25);
+			sunShape.graphics.endFill();
 			sunShape.graphics.drawCircle(0, 0, 25);
 			sunShape.graphics.endFill();
 			sunShape.x = 25;
