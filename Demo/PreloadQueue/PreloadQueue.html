@@ -115,7 +115,7 @@
 		$("#loadAnotherBtn").attr("disabled", null);
 		$("#loadAllBtn").attr("disabled", null);
 
-		// Push each item into our manifest
+		// Push each item into the manifest
 		manifest = [ //just madeup image name atm
 			"image0",
 			"image1.jpg",
@@ -128,9 +128,9 @@
 		];
 
 		// Create a preloader. There is no manifest added to it up-front, we will add items on-demand.
-		preload = new createjs.LoadQueue(true, "../_assets/art/");
-
-		// Use this instead to use tag loading
+		preload = new createjs.LoadQueue(true, "images/"); //dont have images right now but this is where I'd put them
+ 
+		// instead to use tag loading
 		//preload = new createjs.LoadQueue(false);
 
 		preload.on("fileload", handleFileLoad);
@@ -151,19 +151,17 @@
 			loadAnother();
 		}
 	}
-
 	function loadAnother() {
 		// Get the next manifest item, and load it
 		var item = manifest.shift();
 		preload.loadFile(item);
 
-		// If we have no more items, disable the UI.
+		// If no more items, disable the UI.
 		if (manifest.length == 0) {
 			$("#loadAnotherBtn").attr("disabled", "disabled");
 			$("#loadAllBtn").attr("disabled", "disabled");
 			$("#reloadBtn").css("display", "inline");
 		}
-
 		// Create a new loader display item
 		var div = $("#template").clone();
 		div.attr("id", ""); // Wipe out the ID
