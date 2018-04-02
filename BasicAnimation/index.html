@@ -5,7 +5,7 @@
 <script src="http://code.createjs.com/createjs-2013.12.12.min.js"></script>
 <title>CreateJS Shape Animation</title>
 <script>
-		var stage, sunShape;
+		var stage, sunShape, titleText;
 		function init()
 		{
 			stage = new createjs.Stage("stage-canvas");
@@ -48,14 +48,27 @@
 			sunShape.y = 25;
 			stage.addChild(sunShape);
 			titleText = new createjs.Text(
-				"Hello CreateJS",	   	// Text
+				"Hello CreateJS",		// Text
 				"bold 36px Verdana",	// CSS font attributes
-				"#201A66"				      // Color midnight blue
+				"#201A66"				// Color midnight blue
 			);
-			titleText.x = (stage.canvas.width - titleText.getMeasuredWidth()) / 2;   //x position
-			titleText.y = (stage.canvas.height - titleText.getMeasuredHeight()) / 2; //y position
+			titleText.regX = titleText.getMeasuredWidth() / 2;
+			titleText.regY = titleText.getMeasuredHeight() / 2;
+			titleText.x = stage.canvas.width / 2;
+			titleText.y = stage.canvas.height / 2;
 			titleText.shadow = new createjs.Shadow("#000", 5, 5, 10);
 			stage.addChild(titleText);
+			createjs.Tween.get(titleText, {loop:true})
+					.to({rotation:360}, 1800, createjs.Ease.bounceOut)
+					.wait(1000)
+					.to({rotation:0}, 1800, createjs.Ease.quintIn)
+					.wait(1000);
+			createjs.Tween.get(sunShape, {loop:true})
+					.to({x:525, y:375}, 3000, createjs.Ease.quintIn)
+					.wait(2000)
+					.to({x:25, y:25}, 3000, createjs.Ease.circOut);
+			createjs.Ticker.setFPS(60);
+			createjs.Ticker.addEventListener("tick", tickHandler);
 
 	//tween loop property restores a sun shape x and y properties and to method is called again..
 			createjs.Tween.get(sunShape, {loop:true})		//the get method stores the properties of the sun shape obj
@@ -64,7 +77,7 @@
 					.wait(2000) //wait method causes a delay foring the tween to delay before doing the next action
 					.to({x:25, y:25}, 3000, createjs.Ease.circOut); //moves the sun shape obj back to the top left
 			createjs.Ticker.addEventListener("tick", tickHandler);
-			stage.update();
+			// stage.update();
 		}
 
 		function tickHandler(e)
