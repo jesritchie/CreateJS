@@ -28,9 +28,41 @@
 		promptText.x = stage.canvas.width * .5 - promptText.getMeasuredWidth() / 2;
 		stage.addChild(promptText); // add start <- prompt to the stage.
 
+				messageText.write = function(e){ //the mouse postion
+					this.text = e.type
+						+ " | x:" + Math.floor(e.stageX)
+						+ " y:" + Math.floor(e.stageY);
+					this.x = stage.canvas.width * .5 - this.getMeasuredWidth() / 2;
+				}
+
+		 	   stage.mouseMoveOutside = true;
+		       stage.addEventListener("stagemousemove", function(e) { //mouse move listener
+					if (isDragging){ // if mouse is down
+						circleShape.x = e.stageX;
+						circleShape.y = e.stageY;
+					}
+					messageText.write(e); //stagemousemove
+					stage.update();
+				});
+
+		        stage.addEventListener("stagemousedown", function(e) { //mouse down listener
+					if (stage.getObjectUnderPoint(e.stageX, e.stageY)
+						== circleShape){ // if mouse down is on circle
+						isDragging = true;
+					}
+					messageText.write(e);//stagemousedown
+					stage.update();
+				});
+
+		        stage.addEventListener("stagemouseup", function(e) {//mouse up listener
+					isDragging = false; //no longer dragging
+					messageText.write(e); //stagemouseup
+					stage.update();
+				});
+
+				stage.update();
 
 
-		stage.update();
 	}
 </script>
 <style>
