@@ -13,73 +13,42 @@
 
 <script>
 var canvas, stage, exportRoot;
-var inPlay; //to know when game is playing
-var splat;//will be used for canvas egg splat
-var gOver;//determine when game is over
-var score;//this will update the score
-var nest; //this is a var vor the nest
-//================== H E R O E S   V A R I A B L E S =========================\\
-var hero;//this is the var for the little blue monster
-var walkPos;//this will hold the postion that the hero will walk towards
-var moving;//this will control whether or not the hero is moving
-var heroEgg; // conrols the heros egg he carries
-//============================================================================\\
-//=================== E N E M Y    V A R I A B L E S =========================\\
-var enemy;//this is the var for the traidactul -> bird.
-var aTime = 0;//attack time is a count that will count u how often to attack
-var aFreq;//how often to attack
-var attackSpeed;//speed of the attack itself
+var inPlay, egg, splat, gOver, score, hero, walkPos, moving, enemy, aTime=0, aFreq, attackSpeed, eEgg=false, eggDrop=false, eggSplat, heroEgg, eggCounter, nest;
 var ePosX = [-95, -95, 100, 900, 1100];
 var ePosY = [90, 180, -75, -75, 0];
-var eEgg = false;
-//============================================================================\\
-//============= E G G   C O N T R O L    V A R I A B L E S ===================\\
-var egg;//will be used for canvas egg
-var eggDrop = false;
-var eggSplat;   //if egg is splatten
-var eggCounter; //how many eggs on the screen
-//============================================================================\\
+
 
 function init() {
 	canvas = document.getElementById("canvas");
-  //preload sounds into manifest.
+
 	var manifest = [
 		{src:"sounds/splat.mp3", id:"splat_1"}
 	];
 
 	var loader = new PreloadJS(false);
 	loader.installPlugin(SoundJS);
-	//function is called when the loader completes loading the .mp3 into the manifest.
 	loader.onComplete = handleComplete;
 	loader.loadManifest(manifest);
 }
-//At this point everything is ready and game programming can commence.
-function handleComplete() {
-//exportRoot is the image canvas itself
-	exportRoot = new lib.game();
-	egg = exportRoot.egg;      // short hand for egg
-	splat = exportRoot.splat;  // short hand for splat
-	gOver = exportRoot.gOver;  // short hand for game over title
-	hero = exportRoot.monster; // short hand for my hero
-	// make a clickable element which will be the ground
-	// so that upon clicking on the ground the hero will move to the postion clicked
-	// and stop on the click postion on the ground itself.
 
-	// To do the above link the export route -> ground -> onClick
+function handleComplete() {
+	exportRoot = new lib.game();
+	egg = exportRoot.egg;
+	splat = exportRoot.splat;
+	gOver = exportRoot.gOver;
+	hero = exportRoot.monster;
 	exportRoot.ground.onClick = groundClick;
-	enemy = exportRoot.bird;   // short hand for enemy
+	enemy = exportRoot.bird;
 	enemy.onClick = eClick;
 	nest = exportRoot.nest;
 
 	stage = new Stage(canvas);
 	stage.addChild(exportRoot);
 	setTitle();
-		//Change the screen
 	stage.update();
-  //Tick is something that happens every frame per second
+
 	Ticker.setFPS(24);
-	Ticker.addListener(window);//sets the ticker to look in this
-	                           //window for a function named tick
+	Ticker.addListener(window);
 }
 
 function playSound(name, loop) {
@@ -87,208 +56,152 @@ function playSound(name, loop) {
 }
 
 function setTitle(){
-	exportRoot.title.visible = true; //show the title -> needed for game over.
+	exportRoot.title.visible = true;
 	exportRoot.title.button.onClick = startClick;
-	gOver.visible = false;//hide game over text
-	//move the egg off the screen -> well its still on just not in the canvas element
-	//moved slightly above and to the left
+	gOver.visible = false;
 	egg.x = -100;
 	egg.y = -100;
-	//hide the splat as well
-	//moved farther to the left then the egg since it is slightly larger
-	//550 down is actually where it is going to splat on the ground
-	//will only ever need to move it on the x-axis when it hits the ground
 	splat.x = -200;
 	splat.y = 550;
-	//reset splate aplha to 1
 	splat.alpha = 1;
 	score = 0;
-	//======================== H E R O =========================================\\
-	hero.x = 175; //reset hero back to original postion
-	//initialize the walk postion
-	walkPos = hero.x; // sets walk to heroes x position
-	moving = false; //initialize moving as no
-	heroEgg = false; //hide the egg
-	//==========================================================================\\
-	//======================== E N E M Y =======================================\\
-	aFreq = 350; //fequency set every 350 frames
-	attackSpeed = 4000;//attack speed will take 4 seconds.
-	var p = Math.round(Math.random()*4) // random start location
+	hero.x = 175;
+	walkPos = hero.x;
+	moving = false;
+	aFreq = 350;
+	attackSpeed = 4000;
+	var p = Math.round(Math.random()*4);
 	enemy.x = ePosX[p];
 	enemy.y = ePosY[p];
-	//==========================================================================\\
-	//============================ E G G =======================================\\
 	eggSplat = false;
-	eggCounter = 5; //start with 5 eggs
-	for (var i = 1; i <= 5; i++){
-			nest["egg"+i].visible = true; //reset all eggs to visable
-	}
-	//==========================================================================\\
+	heroEgg = false;
+	eggCounter = 5;
+	nest.egg1.visible = true;
+	nest.egg2.visible = true;
+	nest.egg3.visible = true;
+	nest.egg4.visible = true;
+	nest.egg5.visible = true;
 }
-//enventObj lets CreateJS know that there is a event taking place
-//the click of a button
 function startClick(eventObj){
-	exportRoot.title.visible = false; //title screen to disappear
-	exportRoot.title.button.onClick = null;	//make button no longer clickable
-	inPlay = true; //set inPlay to true since game is now active
-	eAttack(); //set enemy to attack straight away
+	exportRoot.title.visible = false;
+	exportRoot.title.button.onClick = null;
+	inPlay = true;
+	eAttack();
 }
-function groundClick(eventObj){//Ground Click function
-	//eventObj is tell createjs an event is taking place
+function groundClick(eventObj){
 	//console.log(eventObj.stageX);
 	walkPos = eventObj.stageX;
-	moving = true; 	//now moving
-	//adding animation
-	hero.gotoAndStop("walk");//this is works because its based on the
-	 						 //flash framework, easy
+	moving = true;
+	hero.gotoAndStop("walk");
 }
-function tick(){//tick function to be called by Ticker
-//as it runs detect if the game is playing or not
-	if (inPlay) {//if it is do game stuff...
-		heroMove(); // moves the hero
-		enemyManager(); // manages the enemy
-		eggControl();// manages the enemy egg
-		exportRoot.score.text=score; //update score.
+function tick(){
+	if (inPlay) {
+		heroMove();
+		enemyManager();
+		eggControl();
+		exportRoot.score.text=score;
 	}
-	stage.update();// update the stage to make stuff happen
+	stage.update();
 }
-//function for moving the heroes
 function heroMove(){
 	hero.egg.visible = heroEgg;
-		if (moving){ //hero is moving
-				//Step 1) determine if the ground has been clicked to the
-				//left or the right of the hero
-				if (walkPos < hero.x){//Move Left
-					//step 2) remove pixels from hero each frame
-					hero.x -= 7; //take 7 px off the x position of the hero every frame
-											 //this will give the illusion of movement
-					//step 3) change direction the hero faces.
-					hero.scaleX = -1.75; //Due to hero export at 175% scale must match at 1.75
-														//Normally .scaleX would be -1 to flip
-				}
-				else{ //Move Right
-					//step 2) add pixels from hero each frame
-					hero.x += 7; //add 7 px to the x position of the hero every frame
-											 //this will give the illusion of movement
-					//step 3) change direction the hero faces.
-					hero.scaleX = 1.75; //Due to hero export at 175% scale must match at 1.75
-														//Normally .scaleX would be 1 to flip
-			}
-			var diff = walkPos-hero.x; //the difference
-			if(diff <= 5.1 && diff >-5.1){ //approximately at the postion that hero should stop
-				moving = false;
-				hero.gotoAndStop("idle");//stops character from walking and now is idle
-			}
+	if (moving){
+		if (walkPos < hero.x){
+			hero.x -= 7;
+			hero.scaleX = -1.75;
+		} else {
+			hero.x += 7;
+			hero.scaleX = 1.75;
 		}
-		//collision between hero and the nest
-															     //nest radius is 50 and hero must have an egg
-		if (collisionHero(nest.x, nest.y, 50)&& heroEgg == true){// hero collide with nest
-			score += 10; // update socre
-			heroEgg = false; //hide heros egg he was carrying
-			eggCounter ++; //add a egg to the counter
-			nest["egg"+eggCounter].visable = true; //put the egg back in the nest.
+		var diff = walkPos-hero.x;
+		if(diff <= 5.1 && diff >-5.1){
+			moving=false;
+			hero.gotoAndStop("idle");
 		}
+	}
+	if (collisionHero(nest.x, nest.y, 50) && heroEgg == true){
+		score+=10;
+		heroEgg = false;
+		eggCounter++;
+		nest["egg"+eggCounter].visible = true;
+	}
 }
-function enemyManager(){//looks after how often to attack
-	aTime ++; //incease attack time by one
-	if (aTime > aFreq){ //time to attack
-		if (eggCounter <= 0){ //out of eggs
-			Tween.removeTweens(enemy);//this will remove all tweens on the enemy
-					                  //game over no longer playing, stop ticking
+function enemyManager(){
+	aTime++;
+	if(aTime > aFreq){
+		if (eggCounter <= 0){
+			Tween.removeTweens(enemy);
 			inPlay = false;
 			setTitle();
-		} else {//continue to attack!
-			//console.log("attack!");
-			eAttack(); //enemy Attack
-			if (aFreq > 270){ //the amount of time it take the enmey to get off the screen
-				//speed it up
-				aFreq -+ 10; //remove 10 off frequencey
-				attackSpeed -= 250; //remove a quarter of a second off speed
+		} else {
+			eAttack();
+			if (aFreq > 270){
+				aFreq -= 10;
+				attackSpeed -= 250;
 			}
 		}
-		aTime = 0; //reset attack time
+		aTime = 0;
 	}
 }
 function eAttack(){
-	eEgg = false;// ensure egg is invasiabe.
-	enemy.scaleX = -1.3;//flip the enemy in oppiste direction
-		                // enemy scale up 130 % hence 1.3
-	//Add a TWEEN
-	//create a tween to each point x:450, y:450  pixels , which is roughly the
-	//center of the stage
-	//Next -> the time it will take is 4500 milliseconds i.e 4.5 seconds
-	//Then its going to use the ease of sine out which means it will get there
-	//slower as it gets to the end
+	eEgg = false;
+	enemy.scaleX = -1.3;
 	Tween.get(enemy).to({x:450, y:450}, 4500, Ease.sineOut).call(eEscape);
 }
-function eEscape(){// escaping after getting an egg.
-	nest["egg"+eggCounter].visible = false; // hide an egg -> its gone with the bird.
-	eggCounter --; // remove an egg
-	eEgg = true;// shows the enemy carrying the egg
-	enemy.scaleX = 1.3;// flip the enemy
-	var p = Math.round(Math.random()*4); //generate random number between 0-3
-	//that number is going to choose the enemys random escape
-	//ePosX ePosY will hold random escape postions for enemey
-	Tween.get(enemy).to({x:ePosX[p], y: ePosY[p]}, attackSpeed, Ease.sineOut);
+function eEscape(){
+	nest["egg"+eggCounter].visible = false;
+	eggCounter --;
+	eEgg = true;
+	enemy.scaleX = 1.3;
+	var p = Math.round(Math.random()*4);
+	Tween.get(enemy).to({x:ePosX[p], y: ePosY[p]}, attackSpeed, Ease.sineOut);	
 }
-function eggControl(){ //controls  egg
-	if (eggCounter <= 0){//out of eggs
+function eggControl(){
+	if (eggCounter <= 0){
 		gOver.visible = true;
 	}
 	enemy.egg.visible = eEgg;
-	if (eggDrop){//drop the egg
-			egg.y += 4; //move the egg down towards the ground
-					    //egg radius is 18 and hero is NOT already holding an egg
-		if (collisionHero(egg.x, egg.y, 18) && heroEgg == false){ //collision
-			//now catch the egg
-			score += 10; //increase score
-			heroEgg = true; //show heroes egg
-			egg.x = -100; //hide the fallen egg
-			egg.y = -100; //hide the fallen egg
-			eggDrop = false; //stop egg from dropping
+	if (eggDrop){
+		egg.y +=4;
+		if (collisionHero(egg.x, egg.y, 18) && heroEgg == false){
+			score += 10;
+			heroEgg = true;
+			egg.x = -100;
+			egg.y = -100;
+			eggDrop = false;
 		}
-		if(egg.y > 550){//egg has reach the ground.
-				//move splat to eggs position
-				splat.x = egg.x;
-				//now get rid of the egg
-				egg.x = -100; //hide off the screen again
-				egg.y = - 100; //hide off the screen again
-				eggDrop = false;
-				splat.gotoAndPlay("sound");//add a splat sound -> also cause slight tween animation
-				eggSplat = true; //update eggSplat
+		if(egg.y > 550){
+			splat.x = egg.x;
+			egg.x = -100;
+			egg.y = -100;
+			eggDrop = false;
+			splat.gotoAndPlay("sound");
+			eggSplat = true;
 		}
 	}
-	if (eggSplat){//egg splated.
-		//make egg more trasparent with each frames
-		//alpha property starts at 1 and goes to 0
-		splat.alpha -= 0.08; //8% removed each frame
-		if (splat.alpha <= 0 ){//its invisable.
-			splat.x = -200; // move it back off the screen.
-			splat.alpha = 1; // remake it visable.
-			eggSplat = false; //reset to egg not being splatted.
+	if (eggSplat){
+		splat.alpha -= 0.08;
+		if (splat.alpha<=0){
+			splat.x = -200;
+			splat.alpha = 1;
+			eggSplat = false;
 		}
 	}
 }
-function eClick (eventObj){//control for when enemy is clicked
-	if(eEgg){ //enemy has an egg showing
+function eClick (eventObj){
+	if(eEgg){
 		eEgg = false;
-		//add the egg at the enemys current location
 		egg.x = this.x;
 		egg.y = this.y;
-		//drop the egg to the ground
 		eggDrop = true;
-		//update Score
-		score += 10;
+		score+=10;
 	}
 }
-function collisionHero(xPos, yPos, Radius){//coliosion handler for hero
-//	x position of the object wanted to collide with the hero
-//	y position of the object wanted to collide with the hero
-//  and the radius for that object
-	var distX = xPos - hero.x; //distance between hero and obj on x-axis
-	var distY = yPos - hero.y; //distance between hero and obj on y-axis
-	var distR = Radius + 35; //distance in the radius
-	if (distX * distX + distY * distY <= distR * distR){ //obj and hero collided
+function collisionHero(xPos, yPos, Radius){
+	var distX = xPos - hero.x;
+	var distY = yPos - hero.y;
+	var distR = Radius + 35;
+	if (distX * distX + distY * distY <= distR * distR){
 		return true;
 	}
 }
